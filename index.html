@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pedidos Delivery</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
   :root{
     --yellow:#FFC72C;
     --yellow-dark:#e6ae00;
@@ -16,195 +16,78 @@
     --text:#f0f0f0;
     --muted:#888;
     --radius:14px;
-    --c0:#FFFFFF;
-    --c1:#FFC72C;
-    --c2:#00E5FF;
-    --c3:#69FF47;
-    --c4:#448AFF;
-    --c5:#E040FB;
-    --c6:#FF6D00;
-    --c7:#FF4081;
-    --c8:#FF5252;
-    --c9:#FFD740;
   }
   html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Courier New',Courier,monospace;}
+  body{display:flex;flex-direction:column;max-width:600px;margin:0 auto;height:100dvh;}
 
-  body{
-    display:flex;
-    flex-direction:column;
-    max-width:600px;
-    margin:0 auto;
-    height:100dvh;
-  }
+  #codigo{user-select:text;-webkit-user-select:text;}
 
-  header{
-    background:#111;
-    border-bottom:1px solid #222;
-    padding:14px 16px 12px;
-    flex-shrink:0;
-  }
-  .header-label{
-    font-size:11px;
-    letter-spacing:0.15em;
-    color:var(--muted);
-    text-transform:uppercase;
-    margin-bottom:10px;
-  }
+  header{background:#111;border-bottom:1px solid #222;padding:14px 16px 12px;flex-shrink:0;}
+  .header-label{font-size:11px;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:10px;}
 
-  .input-row{
-    display:flex;
-    gap:10px;
-    align-items:stretch;
-  }
+  .input-row{display:flex;gap:10px;align-items:stretch;}
   #codigo{
-    flex:1;
-    background:#222;
-    border:2px solid #333;
-    border-radius:var(--radius);
-    color:var(--text);
-    font-family:'Courier New',Courier,monospace;
-    font-size:26px;
-    font-weight:700;
-    padding:10px 16px;
-    outline:none;
-    letter-spacing:0.05em;
-    min-width:0;
-    transition:border-color 0.15s;
+    flex:1;background:#222;border:2px solid #333;border-radius:var(--radius);
+    color:var(--text);font-family:'Courier New',Courier,monospace;
+    font-size:26px;font-weight:700;padding:10px 16px;outline:none;
+    letter-spacing:0.05em;min-width:0;transition:border-color 0.15s;
   }
   #codigo:focus{border-color:var(--yellow);}
   #codigo::placeholder{color:#444;font-weight:400;font-size:18px;}
 
   #btn-add{
-    background:var(--yellow);
-    border:none;
-    border-radius:var(--radius);
-    color:#0a0a0a;
-    font-family:'Courier New',Courier,monospace;
-    font-size:22px;
-    font-weight:900;
-    padding:10px 22px;
-    cursor:pointer;
-    flex-shrink:0;
-    letter-spacing:0.02em;
-    transition:background 0.1s, transform 0.08s;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    white-space:nowrap;
+    background:var(--yellow);border:none;border-radius:var(--radius);
+    color:#0a0a0a;font-family:'Courier New',Courier,monospace;font-size:22px;
+    font-weight:900;padding:10px 22px;cursor:pointer;flex-shrink:0;
+    letter-spacing:0.02em;transition:background 0.1s,transform 0.08s;
+    display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;
   }
   #btn-add:active{background:var(--yellow-dark);transform:scale(0.96);}
   #btn-add svg{width:24px;height:24px;flex-shrink:0;}
 
-  .legenda{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px 10px;
-    padding:10px 16px;
-    background:#0f0f0f;
-    border-bottom:1px solid #1a1a1a;
-    flex-shrink:0;
-  }
-  .legenda-item{
-    display:flex;
-    align-items:center;
-    gap:5px;
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:0.06em;
-  }
-  .legenda-dot{
-    width:10px;height:10px;
-    border-radius:50%;
-    flex-shrink:0;
-  }
+  .legenda{display:flex;flex-wrap:wrap;gap:6px 10px;padding:10px 16px;background:#0f0f0f;border-bottom:1px solid #1a1a1a;flex-shrink:0;}
+  .legenda-item{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;letter-spacing:0.06em;}
+  .legenda-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 
-  .list-area{
-    flex:1;
-    overflow-y:auto;
-    padding:10px 10px 20px;
-  }
+  .list-area{flex:1;overflow-y:auto;padding:10px 10px 20px;}
   .list-area::-webkit-scrollbar{width:4px;}
   .list-area::-webkit-scrollbar-track{background:transparent;}
   .list-area::-webkit-scrollbar-thumb{background:#333;border-radius:4px;}
 
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-  }
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 
   .empty{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-    color:#333;
-    user-select:none;
-    pointer-events:none;
-    padding:60px 0;
-    grid-column:1/-1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:12px;color:#333;pointer-events:none;padding:60px 0;grid-column:1/-1;
   }
   .empty svg{width:48px;height:48px;opacity:0.3;}
   .empty p{font-size:13px;letter-spacing:0.08em;}
 
   .pedido{
-    background:var(--card);
-    border:1.5px solid var(--card-border);
-    border-radius:var(--radius);
-    padding:12px 8px 14px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    cursor:pointer;
-    user-select:none;
-    -webkit-user-select:none;
-    touch-action:manipulation;
-    transition:background 0.15s, border-color 0.15s, transform 0.08s;
-    min-height:100px;
+    background:var(--card);border:1.5px solid var(--card-border);border-radius:var(--radius);
+    padding:12px 8px 14px;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:4px;cursor:pointer;touch-action:manipulation;
+    transition:background 0.15s,border-color 0.15s,transform 0.08s;min-height:100px;
   }
   .pedido:active{transform:scale(0.95);}
   .pedido.vermelho{background:#2a0500;border-color:var(--red);}
 
   .pedido-timer{
-    font-size:15px;
-    font-weight:700;
-    color:var(--muted);
-    letter-spacing:0.06em;
-    line-height:1;
-    font-variant-numeric:tabular-nums;
-    transition:color 0.5s;
+    font-size:15px;font-weight:700;color:var(--muted);letter-spacing:0.06em;
+    line-height:1;font-variant-numeric:tabular-nums;transition:color 0.5s;
   }
   .pedido-timer.urgente{color:#FF6B00;}
   .pedido-timer.critico{color:#DA291C;}
   .pedido.vermelho .pedido-timer{color:#ff9a94;}
 
-  .pedido-numero{
-    font-size:34px;
-    font-weight:900;
-    letter-spacing:0.04em;
-    line-height:1;
-    transition:opacity 0.15s;
-  }
-  .pedido.vermelho .pedido-numero{opacity:0.55;}
+  .pedido-numero{font-size:34px;font-weight:900;letter-spacing:0.04em;line-height:1;transition:opacity 0.15s;}
+  .pedido.vermelho .pedido-numero{opacity:0.45;}
 
-  @keyframes slideIn{
-    from{opacity:0;transform:scale(0.88);}
-    to{opacity:1;transform:scale(1);}
-  }
+  @keyframes slideIn{from{opacity:0;transform:scale(0.88);}to{opacity:1;transform:scale(1);}}
   .pedido.new{animation:slideIn 0.18s ease-out;}
 
-  @keyframes fadeOut{
-    from{opacity:1;transform:scale(1);}
-    to{opacity:0;transform:scale(0.88);}
-  }
-  .pedido.removendo{
-    animation:fadeOut 0.18s ease-out forwards;
-    pointer-events:none;
-  }
+  @keyframes fadeOut{from{opacity:1;transform:scale(1);}to{opacity:0;transform:scale(0.88);}}
+  .pedido.removendo{animation:fadeOut 0.18s ease-out forwards;pointer-events:none;}
 </style>
 </head>
 <body>
@@ -236,20 +119,19 @@
 </div>
 
 <script>
+  // 10 cores bem distintas, embaralhadas para que números próximos não se pareçam
   const CORES = [
-    '#FFFFFF',
-    '#FFC72C',
-    '#00E5FF',
-    '#69FF47',
-    '#448AFF',
-    '#E040FB',
-    '#FF6D00',
-    '#FF4081',
-    '#FF5252',
-    '#FFD740'
+    '#FF1744', // 0 — vermelho vivo
+    '#00E5FF', // 1 — ciano
+    '#FFD600', // 2 — amarelo puro
+    '#D500F9', // 3 — violeta
+    '#00E676', // 4 — verde menta
+    '#FF6D00', // 5 — laranja
+    '#2979FF', // 6 — azul elétrico
+    '#AEEA00', // 7 — limão
+    '#FF4081', // 8 — rosa choque
+    '#FFFFFF'  // 9 — branco
   ];
-
-  const NOMES = ['0','1','2','3','4','5','6','7','8','9'];
 
   const input  = document.getElementById('codigo');
   const grid   = document.getElementById('grid');
@@ -260,7 +142,7 @@
   CORES.forEach((c,i)=>{
     const item=document.createElement('div');
     item.className='legenda-item';
-    item.innerHTML=`<span class="legenda-dot" style="background:${c}"></span><span style="color:${c}">${NOMES[i]}xxx</span>`;
+    item.innerHTML=`<span class="legenda-dot" style="background:${c}"></span><span style="color:${c}">${i}xxx</span>`;
     legEl.appendChild(item);
   });
 
@@ -272,6 +154,33 @@
   let pedidos=[];
   let rafId=null;
 
+  // ── Persistência ──────────────────────────────────────────────
+  function salvar(){
+    try{
+      const dados=pedidos.map(p=>({id:p.id,codigo:p.codigo,added:p.added,vermelho:p.vermelho}));
+      localStorage.setItem('mc_pedidos',JSON.stringify(dados));
+    }catch(e){}
+  }
+
+  function carregar(){
+    try{
+      const raw=localStorage.getItem('mc_pedidos');
+      if(!raw) return;
+      const dados=JSON.parse(raw);
+      dados.forEach(d=>{
+        const p={id:d.id,codigo:d.codigo,added:d.added,vermelho:d.vermelho,el:null};
+        pedidos.push(p);
+        const div=criarEl(p);
+        if(p.vermelho) div.classList.add('vermelho');
+        grid.appendChild(div);
+        p.el=div;
+      });
+      updateEmpty();
+      if(pedidos.length>0) startTick();
+    }catch(e){}
+  }
+
+  // ── Timer ─────────────────────────────────────────────────────
   function pad(n){return String(n).padStart(2,'0');}
   function formatTimer(ms){
     const s=Math.floor(ms/1000);
@@ -283,7 +192,6 @@
     if(s>=120) return 'urgente';
     return '';
   }
-
   function renderAll(){
     pedidos.forEach(p=>{
       if(!p.el) return;
@@ -293,35 +201,41 @@
       t.className='pedido-timer '+timerClass(ms);
     });
   }
-
   function tick(){renderAll();rafId=requestAnimationFrame(tick);}
   function startTick(){if(rafId===null)rafId=requestAnimationFrame(tick);}
   function stopTick(){if(rafId!==null){cancelAnimationFrame(rafId);rafId=null;}}
   function updateEmpty(){empty.style.display=pedidos.length===0?'flex':'none';}
 
+  // ── Criar elemento ────────────────────────────────────────────
+  function criarEl(p){
+    const cor=corDoCodigo(p.codigo);
+    const div=document.createElement('div');
+    div.className='pedido';
+    div.innerHTML=
+      '<span class="pedido-timer">00:00</span>'+
+      '<span class="pedido-numero" style="color:'+cor+'">'+p.codigo+'</span>';
+    div.addEventListener('click',()=>handleClick(p,div));
+    return div;
+  }
+
+  // ── Adicionar ─────────────────────────────────────────────────
   function addPedido(codigo){
     codigo=codigo.trim();
     if(!codigo) return;
-    const cor=corDoCodigo(codigo);
     const p={id:Date.now(),codigo,added:Date.now(),vermelho:false,el:null};
     pedidos.unshift(p);
-
-    const div=document.createElement('div');
-    div.className='pedido new';
-    div.innerHTML=
-      '<span class="pedido-timer">00:00</span>'+
-      '<span class="pedido-numero" style="color:'+cor+'">'+codigo+'</span>';
-
-    div.addEventListener('click',()=>handleClick(p,div));
+    const div=criarEl(p);
+    div.classList.add('new');
     grid.insertBefore(div,grid.firstChild);
     p.el=div;
-
     updateEmpty();
     startTick();
+    salvar();
     input.value='';
     input.focus();
   }
 
+  // ── Clique (marcar / remover) ─────────────────────────────────
   function handleClick(p,div){
     if(p.vermelho){
       div.classList.add('removendo');
@@ -329,17 +243,20 @@
         div.remove();
         pedidos=pedidos.filter(x=>x.id!==p.id);
         updateEmpty();
+        salvar();
         if(pedidos.length===0) stopTick();
       },200);
     } else {
       p.vermelho=true;
       div.classList.add('vermelho');
+      salvar();
     }
   }
 
   btnAdd.addEventListener('click',()=>{addPedido(input.value);});
   input.addEventListener('keydown',e=>{if(e.key==='Enter'){addPedido(input.value);}});
-  updateEmpty();
+
+  carregar();
 </script>
 </body>
 </html>
